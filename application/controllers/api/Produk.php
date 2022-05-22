@@ -1,4 +1,4 @@
-<?php
+<?php // INI REST SERVER
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use chriskacerguis\RestServer\RestController;
@@ -10,6 +10,9 @@ class Produk extends RestController
       {
             // Construct the parent class
             parent::__construct();
+
+            // di limit hanya bisa minta request 2 kali saja
+            // $this->methods['index_get']['limit'] = 2;
       }
 
       public function index_get($id = 0)
@@ -74,7 +77,11 @@ class Produk extends RestController
             $update = $this->db->update('produk', $data);
 
             if ($update) {
-                  $this->response($data, RestController::HTTP_OK);
+                  // $this->response($data, RestController::HTTP_OK);
+                  $this->response([
+                        'status' => TRUE,
+                        'message' => 'Berhasil update data'
+                  ], 200);
             } else {
                   $this->response([
                         'status' => FALSE,

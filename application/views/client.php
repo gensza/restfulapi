@@ -15,7 +15,8 @@
 <body>
       <h1>NIBRAS</h1>
       <button class="btn btn-success" onclick="add_data()">Add Data</button>
-      <table class="table" id="dataproduk">
+
+      <table class="table" id="">
             <thead>
                   <tr>
                         <th scope="col">#</th>
@@ -29,18 +30,22 @@
                   </tr>
             </thead>
             <tbody>
-                  <?php foreach ($data_produk as $d) { ?>
+                  <?php $no = 1 ?>
+                  <?php foreach ($produk as $p) : ?>
                         <tr>
-                              <td><?= $d['kode_barang'] ?></td>
-                              <td><?= $d['nama_barang'] ?></td>
-                              <td><?= $d['kode_barang'] ?></td>
-                              <td><?= $d['kode_ukuran'] ?></td>
-                              <td><?= $d['kode_warna'] ?></td>
-                              <td><?= $d['harga'] ?></td>
-                              <td><?= $d['harga_dasar'] ?></td>
+                              <td><?= $no++ ?></td>
+                              <td><?= $p['kode_barang'] ?></td>
+                              <td><?= $p['nama_barang'] ?></td>
+                              <td><?= $p['kode_ukuran'] ?></td>
+                              <td><?= $p['kode_warna'] ?></td>
+                              <td><?= $p['harga'] ?></td>
+                              <td><?= $p['harga_dasar'] ?></td>
+                              <td>
+                                    <button class="btn btn-warning">edit</button>
+                                    <a href="<?= base_url('api/Admin_api/del_dataproduk/' . $p['id_produk']) ?>" class="btn btn-danger">delete</a>
+                              </td>
                         </tr>
-                  <?php } ?>
-
+                  <?php endforeach; ?>
             </tbody>
       </table>
 
@@ -52,36 +57,38 @@
                               <h4 class="modal-title" id="myModalLabel">Add Data</h4>
                               </button>
                         </div>
-                        <div class="modal-body mt-0">
-                              <div>
-                                    <label for="">Kode Barang</label>
-                                    <input type="text" class="form-control" id="kode_barang">
+                        <form action="<?= base_url('api/Admin_api/save_dataproduk') ?>" method="POST">
+                              <div class="modal-body mt-0">
+                                    <div>
+                                          <label for="">Kode Barang</label>
+                                          <input type="text" class="form-control" id="kode_barang" name="kode_barang">
+                                    </div>
+                                    <div>
+                                          <label for="">Nama Barang</label>
+                                          <input type="text" class="form-control" id="nama_barang" name="nama_barang">
+                                    </div>
+                                    <div>
+                                          <label for="">Kode Ukuran</label>
+                                          <input type="text" class="form-control" id="kode_ukuran" name="kode_ukuran">
+                                    </div>
+                                    <div>
+                                          <label for="">Kode Warna</label>
+                                          <input type="text" class="form-control" id="kode_warna" name="kode_warna">
+                                    </div>
+                                    <div>
+                                          <label for="">Harga</label>
+                                          <input type="text" class="form-control" id="harga" name="harga">
+                                    </div>
+                                    <div>
+                                          <label for="">Harga Dasar</label>
+                                          <input type="text" class="form-control" id="harga_dasar" name="harga_dasar">
+                                    </div>
                               </div>
-                              <div>
-                                    <label for="">Nama Barang</label>
-                                    <input type="text" class="form-control" id="nama_barang">
+                              <div class="modal-footer">
+                                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
+                                    <button type="submit" class="btn btn-sm btn-success" data-dismiss="modal">Simpan</button>
                               </div>
-                              <div>
-                                    <label for="">Kode Ukuran</label>
-                                    <input type="text" class="form-control" id="kode_ukuran">
-                              </div>
-                              <div>
-                                    <label for="">Kode Warna</label>
-                                    <input type="text" class="form-control" id="kode_warna">
-                              </div>
-                              <div>
-                                    <label for="">Harga</label>
-                                    <input type="text" class="form-control" id="harga">
-                              </div>
-                              <div>
-                                    <label for="">Harga Dasar</label>
-                                    <input type="text" class="form-control" id="harga_dasar">
-                              </div>
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Batal</button>
-                              <button type="button" class="btn btn-sm btn-success" data-dismiss="modal" onclick="simpan_produk()">Simpan</button>
-                        </div>
+                        </form>
                   </div>
             </div>
       </div>
@@ -147,3 +154,35 @@
 </body>
 
 </html>
+
+<script>
+      $(document).ready(function() {
+            $(document).on('click', '#edit_produk', function() {
+                  $("#modal_editdata").modal('show');
+
+                  var id_produk = $(this).data('id_produk');
+                  var kode_barang = $(this).data('kode_barang');
+                  var nama_barang = $(this).data('nama_barang');
+                  var kode_ukuran = $(this).data('kode_ukuran');
+                  var kode_warna = $(this).data('kode_warna');
+                  var harga = $(this).data('harga');
+                  var harga_dasar = $(this).data('harga_dasar');
+
+                  console.log(kode_barang + 'ni');
+
+                  $('#kode_barang_e').val(kode_barang);
+                  $('#nama_barang_e').val(nama_barang);
+                  $('#kode_ukuran_e').val(kode_ukuran);
+                  $('#kode_warna_e').val(kode_warna);
+                  $('#harga_e ').val(harga);
+                  $('#harga_dasar_e').val(harga_dasar);
+
+                  console.log(id_produk);
+
+            });
+      });
+
+      function add_data() {
+            $("#modal_adddata").modal('show');
+      }
+</script>
