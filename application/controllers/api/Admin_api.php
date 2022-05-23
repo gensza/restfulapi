@@ -61,19 +61,32 @@ class Admin_api extends CI_Controller
                   'form_params' => $data_save
             ]);
 
-            $this->index();
+            echo json_encode(true);
       }
 
-      public function del_dataproduk($id_produk)
+      public function del_dataproduk()
       {
-
+            $id_produk = $this->input->post('id_produk');
             $this->_client->request('DELETE', 'produk', [
                   'form_params' => [
                         'id_produk' => $id_produk,
                         'api_key' => 1
                   ]
             ]);
-            $this->index();
+            echo json_encode(true);
+      }
+
+      public function get_data_produk_byid()
+      {
+            $id_produk = $this->input->post('id_produk');
+            $response = $this->_client->request('GET', 'produk/' . $id_produk, [
+                  'query' => [
+                        'api_key' => '1'
+                  ]
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+            echo json_encode($data);
       }
 
       public function update_dataproduk()
@@ -84,10 +97,14 @@ class Admin_api extends CI_Controller
             $data_save['kode_warna'] = $this->input->post('kode_warna');
             $data_save['harga'] = $this->input->post('harga');
             $data_save['harga_dasar'] = $this->input->post('harga_dasar');
+            $data_save['id_produk'] = $this->input->post('id_produk');
+            $data_save['api_key'] = 1;
 
-            $update_dataproduk = $this->M_admin->update_dataproduk($data_save);
+            $this->_client->request('PUT', 'produk', [
+                  'form_params' => $data_save
+            ]);
 
-            echo json_encode($update_dataproduk);
+            echo json_encode(true);
       }
 
       public function get_data_produk()
