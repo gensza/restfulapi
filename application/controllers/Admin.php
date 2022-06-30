@@ -30,7 +30,6 @@ class Admin extends CI_Controller
 	{
 
 		$this->load->view('admin');
-		$get = "grensza";
 		// $data = $this->db->query("SELECT * FROM produk")->result_array();
 		// var_dump($data);
 		// die;
