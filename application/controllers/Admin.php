@@ -37,6 +37,7 @@ class Admin extends CI_Controller
 		//   $this->load->view('dashboard');
 		//   $this->load->view('templates/footer');
 		// echo "hello";
+		// test
 	}
 
 	public function save_dataproduk()
